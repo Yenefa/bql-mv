@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05070a">
+<title>八千里路明月照 · 纯代码水墨 MV</title>
+<meta name="description" content="泽国同学《八千里路明月照》纯代码水墨音乐影像。画面由 Canvas 实时绘制，不使用任何图片素材。">
+<link rel="stylesheet" href="style.css?v=20261028a">
+</head>
+<body>
+
+<div class="viewport" id="viewport">
+  <section class="stage" id="stage" aria-label="《八千里路明月照》纯代码水墨 MV">
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <!-- maker's marks -->
+    <div class="maker" aria-hidden="true">
+      <i class="maker-dot"></i>
+      <span class="maker-cn">八千里路明月照</span>
+      <span class="maker-artist">泽国同学</span>
+    </div>
+    <div class="code-mark" aria-hidden="true">PURE CODE · 16:9</div>
+
+    <!-- chapter caption -->
+    <div class="chapter" id="chapter" aria-live="polite">
+      <i class="ch-rule"></i>
+      <div class="ch-body">
+        <div class="ch-index" id="chIndex">卷一</div>
+        <div class="ch-title" id="chTitle">寒窗</div>
+        <div class="ch-en" id="chEn">TEN YEARS BY LAMPLIGHT</div>
+      </div>
+    </div>
+
+    <!-- the key line -->
+    <div class="keyline" id="keyline" aria-live="polite">
+      <span class="keyline-main" id="keylineMain">八千里路明月照</span>
+      <span class="keyline-sub" id="keylineSub">EIGHT THOUSAND LI UNDER THE MOON</span>
+    </div>
+
+    <div class="credits-corner" aria-hidden="true">CANVAS 2D · NO IMAGES</div>
+
+    <!-- intro -->
+    <div class="intro" id="intro">
+      <div class="intro-veil"></div>
+      <div class="intro-inner">
+        <i class="intro-rule" aria-hidden="true"></i>
+
+        <h1 class="intro-title" aria-label="八千里路明月照">
+          <span>八</span><span>千</span><span>里</span><span>路</span><span>明</span><span>月</span><span>照</span>
+        </h1>
+
+        <div class="intro-side" aria-hidden="true">
+          <div class="intro-sub">挥笔生花问桀骜</div>
+          <div class="intro-artist">泽 国 同 学</div>
+        </div>
+
+        <div class="seal intro-seal" aria-hidden="true">不负<br>寒窗</div>
+
+        <div class="intro-meta">
+          <div class="meta-line">一首关于寒窗、远路与明月的歌</div>
+          <div class="meta-line">画面由 Canvas 实时绘制 · 全片零图片素材 · <b>16:9</b></div>
+        </div>
+
+        <div class="enter-wrap">
+          <button class="enter" id="enter" aria-label="开始播放，入卷">
+            <span class="enter-ring" aria-hidden="true"></span>
+            <span class="enter-cn">入卷</span>
+          </button>
+          <div class="enter-hint">
+            <b>点击进入</b>
+            <span>请开启声音 · 建议全屏观看</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="hud" id="hud">
+      <div class="hud-top">
+        <div class="now">
+          <i class="now-dot" aria-hidden="true"></i>
+          <span>八千里路明月照</span>
+          <span class="slash">/</span>
+          <span class="dim">泽国同学</span>
+        </div>
+        <div class="hud-top-right">SCROLL OF THE MOON</div>
+      </div>
+
+      <div class="controls">
+        <button class="ctl" id="btnPlay" aria-label="暂停">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path id="iconPlay" d="M9 5.5 19 12 9 18.5Z" fill="currentColor" stroke="none"/>
+            <g id="iconPause" style="display:none"><path d="M9 5v14M15 5v14"/></g>
+          </svg>
+        </button>
+
+        <div class="time" aria-hidden="true">
+          <span id="curTime">00:00</span><span class="sep">/</span><span id="durTime">02:53</span>
+        </div>
+
+        <div class="progress" id="progress" role="slider" aria-label="播放进度" aria-valuemin="0" aria-valuemax="173" aria-valuenow="0" tabindex="0">
+          <div class="progress-track"></div>
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="ticks" id="ticks" aria-hidden="true"></div>
+          <div class="progress-head" id="progressHead"></div>
+        </div>
+
+        <div class="sound">
+          <button class="ctl" id="btnMute" aria-label="静音">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 9.5h3.2L12 5.8v12.4L7.2 14.5H4z"/>
+              <path id="wave1" d="M15.2 9.3a4 4 0 0 1 0 5.4"/>
+              <path id="wave2" d="M17.7 6.8a7.4 7.4 0 0 1 0 10.4"/>
+              <path id="muteSlash" d="M4 4l16 16" style="display:none"/>
+            </svg>
+          </button>
+          <input class="volume" id="volume" type="range" min="0" max="1" step="0.01" value="0.9" aria-label="音量">
+        </div>
+
+        <button class="ctl" id="btnFs" aria-label="进入全屏">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- end card -->
+    <div class="endcard" id="endcard" role="dialog" aria-modal="true" aria-label="影片结束">
+      <div class="end-inner">
+        <div class="end-col">
+          <div class="end-title">八千里路<br>明月照</div>
+          <div class="end-seal seal" aria-hidden="true">千里<br>共明</div>
+        </div>
+        <div class="end-meta">
+          <div class="end-artist">泽国同学</div>
+          <div class="end-credits">
+            词　<b>周仁</b><br>
+            曲　<b>黄泽国</b><br>
+            演唱　<b>泽国同学</b>
+          </div>
+          <div class="end-credits" style="margin-top:calc(var(--u) * 4)">
+            画面　Canvas 2D 实时绘制<br>
+            声音　Web Audio · 本地音源
+          </div>
+          <div class="end-note">
+            A CODE-DRAWN INK FILM · 16:9<br>
+            纯代码生成 · 零图片素材 · 个人非商业影像<br>
+            音乐版权归原权利人所有
+          </div>
+          <button class="again" id="again">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 10a8 8 0 1 1 1.6 6.2M4 5v5h5"/>
+            </svg>
+            再看一遍
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <span class="sr-only" id="srStatus" aria-live="polite"></span>
+  </section>
+</div>
+
+<script src="env-data.js?v=20261028a"></script>
+<script src="mv.js?v=20261028a"></script>
+</body>
+</html>

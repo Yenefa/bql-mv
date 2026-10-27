@@ -1,0 +1,11 @@
+audio/*.mp3
+audio/*.wav
+audio/*.flac
+audio/*.m4a
+audio/*.ogg
+qa/
+probe-*.json
+qa-sim.webm
+*.webm
+.DS_Store
+Thumbs.db
